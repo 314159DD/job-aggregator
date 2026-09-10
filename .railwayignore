@@ -1,0 +1,33 @@
+# .railwayignore - files excluded from Railway build context
+# (same syntax as .dockerignore)
+
+# Dev/test artifacts
+.env
+.env.*
+!.env.example
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.coverage
+htmlcov/
+*.egg-info/
+dist/
+build/
+
+# Local tooling
+.venv/
+venv/
+node_modules/
+
+# Plan/docs (not needed in container)
+plan/
+*.md
+
+# Git
+.git/
+.gitignore
+
+# IDE
+.vscode/
+.idea/

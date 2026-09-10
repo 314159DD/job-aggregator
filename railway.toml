@@ -1,0 +1,14 @@
+# railway.toml - Job Aggregator Railway deployment config
+# https://docs.railway.app/reference/config-as-code
+#
+# This is a worker service (no HTTP port).
+# Supercronic runs the cron schedule defined in docker/crontab.
+# Health is monitored via Docker HEALTHCHECK (docker/healthcheck.py).
+
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 5

@@ -1,0 +1,18 @@
+# Job Aggregator - in-Docker crontab (run by supercronic)
+# supercronic reads this file and logs to stdout/stderr - no syslog needed.
+
+# ── Hourly: fetch jobs from all enabled sources ──
+# Self-discovery runs automatically at the end of each aggregator pass.
+0 * * * * python -m aggregator
+
+# ── Daily midnight: mark stale jobs inactive (not seen in 7 days) ──
+0 0 * * * python -m aggregator --freshness-check
+
+# ── Daily 00:30: health report (sources + ATS registry stats) ──
+30 0 * * * python -m aggregator --health-report
+
+# ── Weekly Sunday 02:00: full discovery (sitemap scan + self-discover) ──
+0 2 * * 0 python -m aggregator --discover
+
+# ── Weekly Sunday 03:00: skill snapshot (market demand aggregation) ──
+0 3 * * 0 python -m aggregator --skill-snapshot

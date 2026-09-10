@@ -1,0 +1,35 @@
+# .dockerignore - excludes files from the Docker build context
+
+# Environment files (injected at runtime via Railway env vars)
+.env
+.env.*
+!.env.example
+
+# Python artifacts
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.coverage
+htmlcov/
+*.egg-info/
+dist/
+build/
+
+# Local virtualenvs
+.venv/
+venv/
+
+# Plan / documentation (not needed in container)
+plan/
+
+# Git
+.git/
+.gitignore
+
+# IDE
+.vscode/
+.idea/
+
+# Docker build artifacts
+*.log

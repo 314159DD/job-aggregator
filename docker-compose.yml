@@ -1,0 +1,39 @@
+version: "3.9"
+
+# Job Aggregator - Docker Compose
+#
+# Production:  docker compose up -d
+# One-off run: docker compose run --rm job-aggregator
+# Discovery:   docker compose run --rm -e AGGREGATOR_MODE=discover job-aggregator
+# Health:      docker compose run --rm -e AGGREGATOR_MODE=health job-aggregator
+
+services:
+  job-aggregator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: job-aggregator:latest
+    container_name: job-aggregator
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - AGGREGATOR_MODE=${AGGREGATOR_MODE:-cron}
+      - PYTHONPATH=/app
+    volumes:
+      # Persist lock/timestamp files across restarts
+      - aggregator_tmp:/tmp
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "5"
+    healthcheck:
+      test: ["CMD", "python", "/app/docker/healthcheck.py"]
+      interval: 5m
+      timeout: 30s
+      start_period: 2m
+      retries: 3
+
+volumes:
+  aggregator_tmp:
